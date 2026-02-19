@@ -1,0 +1,27 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openmc-crash-course"
+version = "0.1.0"
+authors = [
+  { name="Harrison", email="harrison.reisinger@utexas.edu" },
+]
+description = "A crash course for OpenMC"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "openmc",
+]
+
+[project.urls]
+"Homepage" = "https://github.com/harrisonr/OpenMC_Crash_Course"
+
+[project.scripts]
+openmc-crash-course = "openmc_crash_course.main:main"
