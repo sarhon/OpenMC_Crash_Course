@@ -19,9 +19,8 @@ def run_core():
     output_dir.mkdir(exist_ok=True)
 
     # Configure Cross Sections
-    import os
-    default_xs = '/home/harrisonr/data/OpenMC_DATA/endfb-vii.1-hdf5/cross_sections.xml'
-    openmc.config['cross_sections'] = os.environ.get('OPENMC_CROSS_SECTIONS', default_xs)
+    # OpenMC will automatically use the OPENMC_CROSS_SECTIONS environment variable
+    # If not set, you'll get an error - see README.md for setup instructions
 
     # 1. Define Materials
     all_materials = occ.get_materials()
@@ -32,7 +31,6 @@ def run_core():
     air = all_materials['air']
 
     materials = openmc.Materials([uo2, zirc, water, steel, air])
-    materials.cross_sections = openmc.config['cross_sections']
     materials.export_to_xml(xml_dir / 'materials.xml')
 
     # 2. Define Geometry

@@ -2,9 +2,53 @@
 
 This project is a crash course for [OpenMC](https://openmc.org/).
 
+## Prerequisites
+
+### Nuclear Data
+
+OpenMC requires nuclear cross section data to run. You must download and configure cross sections before running any examples.
+
+#### Download Cross Sections
+
+The easiest way to get cross section data is using the official OpenMC script:
+
+```bash
+# Download ENDF/B-VII.1 data (recommended, ~2 GB)
+openmc-get-nndc-data
+
+# Or for ENDF/B-VIII.0 data (~2.5 GB)
+openmc-get-endf-data
+```
+
+This will download the data to `~/.local/share/openmc/` by default.
+
+#### Configure Environment Variable
+
+Set the `OPENMC_CROSS_SECTIONS` environment variable to point to your `cross_sections.xml` file:
+
+```bash
+# For bash/zsh (add to ~/.bashrc or ~/.zshrc for persistence)
+export OPENMC_CROSS_SECTIONS=~/.local/share/openmc/cross_sections.xml
+
+# For fish (add to ~/.config/fish/config.fish)
+set -x OPENMC_CROSS_SECTIONS ~/.local/share/openmc/cross_sections.xml
+```
+
+Or if you downloaded data to a custom location:
+
+```bash
+export OPENMC_CROSS_SECTIONS=/path/to/your/cross_sections.xml
+```
+
+**Verify your setup:**
+
+```bash
+echo $OPENMC_CROSS_SECTIONS  # Should print the path to cross_sections.xml
+```
+
 ## Installation
 
-You can install this package in editable mode with:
+Install this package in editable mode:
 
 ```bash
 pip install -e .
@@ -34,5 +78,3 @@ To run an example:
 cd examples/01_infinite_medium
 python main.py
 ```
-
-*Note: The examples are configured to use ENDF/B-VII.1 cross sections located at `/home/harrisonr/data/OpenMC_DATA/endfb-vii.1-hdf5/cross_sections.xml`. If your data is in a different location, please update the `openmc.config['cross_sections']` line in each `main.py` file or set the `OPENMC_CROSS_SECTIONS` environment variable.*
