@@ -1,0 +1,39 @@
+#!/bin/bash
+# OpenMC Cross Section Library Switcher Template
+#
+# Instructions:
+# 1. Copy this file: cp .openmc_xs_config.sh.template .openmc_xs_config.sh
+# 2. Edit .openmc_xs_config.sh and update OPENMC_DATA_DIR to your path
+# 3. Add to your ~/.bashrc or ~/.zshrc:
+#      source /path/to/OpenMC_Crash_Course/.openmc_xs_config.sh
+
+# Base directory for cross sections - UPDATE THIS PATH
+OPENMC_DATA_DIR="${HOME}/data/OpenMC_DATA"
+
+# Function to switch to ENDF/B-VII.1
+xs-endfb71() {
+    export OPENMC_CROSS_SECTIONS="${OPENMC_DATA_DIR}/endfb-vii.1-hdf5/cross_sections.xml"
+    echo "Using ENDF/B-VII.1: ${OPENMC_CROSS_SECTIONS}"
+}
+
+# Function to switch to ENDF/B-VIII.0
+xs-endfb80() {
+    export OPENMC_CROSS_SECTIONS="${OPENMC_DATA_DIR}/endfb-viii.0-hdf5/cross_sections.xml"
+    echo "Using ENDF/B-VIII.0: ${OPENMC_CROSS_SECTIONS}"
+}
+
+# Function to switch to TENDL 2017
+xs-tendl() {
+    export OPENMC_CROSS_SECTIONS="${OPENMC_DATA_DIR}/tend_2017_hdf5/cross_sections.xml"
+    echo "Using TENDL 2017: ${OPENMC_CROSS_SECTIONS}"
+}
+
+# Function to show current cross section library
+xs-show() {
+    if [ -z "$OPENMC_CROSS_SECTIONS" ]; then
+        echo "OPENMC_CROSS_SECTIONS is not set"
+        echo "Available libraries: xs-endfb71, xs-endfb80, xs-tendl"
+    else
+        echo "Current: ${OPENMC_CROSS_SECTIONS}"
+    fi
+}

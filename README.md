@@ -10,34 +10,76 @@ OpenMC requires nuclear cross section data to run. You must download and configu
 
 #### Download Cross Sections
 
-The easiest way to get cross section data is using the official OpenMC script:
+Download pre-generated nuclear data libraries from the official OpenMC website [here](https://openmc.org/data/).
 
-```bash
-# Download ENDF/B-VII.1 data (recommended, ~2 GB)
-openmc-get-nndc-data
+Available libraries include:
+- **ENDF/B-VII.1** (recommended, ~2 GB) - Most widely used and validated
+- **ENDF/B-VIII.0** (~2.5 GB) - Newer evaluations with improvements
+- **JEFF-3.3** - European joint evaluated data
+- **TENDL** - TALYS-based evaluated data
 
-# Or for ENDF/B-VIII.0 data (~2.5 GB)
-openmc-get-endf-data
-```
-
-This will download the data to `~/.local/share/openmc/` by default.
+**Steps:**
+1. Download the archive file (`.tar.gz` or `.zip`) for your chosen library
+2. Extract it to a location of your choice (e.g., `~/data/OpenMC_DATA/`)
+   ```bash
+   tar -xzf endfb-vii.1-hdf5.tar.gz -C ~/data/OpenMC_DATA/
+   ```
 
 #### Configure Environment Variable
 
-Set the `OPENMC_CROSS_SECTIONS` environment variable to point to your `cross_sections.xml` file:
+Set the `OPENMC_CROSS_SECTIONS` environment variable to point to the `cross_sections.xml` file in your extracted library:
 
 ```bash
 # For bash/zsh (add to ~/.bashrc or ~/.zshrc for persistence)
-export OPENMC_CROSS_SECTIONS=~/.local/share/openmc/cross_sections.xml
+export OPENMC_CROSS_SECTIONS=~/data/OpenMC_DATA/endfb-vii.1-hdf5/cross_sections.xml
 
 # For fish (add to ~/.config/fish/config.fish)
-set -x OPENMC_CROSS_SECTIONS ~/.local/share/openmc/cross_sections.xml
+set -x OPENMC_CROSS_SECTIONS ~/data/OpenMC_DATA/endfb-vii.1-hdf5/cross_sections.xml
 ```
 
-Or if you downloaded data to a custom location:
+**Important:** Replace the path above with the actual location where you extracted the data.
+
+#### Managing Multiple Cross Section Libraries (Optional)
+
+If you have multiple cross section versions, this repository includes a convenient configuration file:
 
 ```bash
-export OPENMC_CROSS_SECTIONS=/path/to/your/cross_sections.xml
+# 1. Copy the template
+cp .openmc_xs_config.sh.template .openmc_xs_config.sh
+
+# 2. Edit .openmc_xs_config.sh and update OPENMC_DATA_DIR to your path
+
+# 3a. Source it manually each time you need it (temporary, per-session):
+source .openmc_xs_config.sh
+xs-endfb71    # Select your library
+
+# OR
+
+# 3b. Add to your shell config file (persistent, loads automatically):
+# For zsh (most common on macOS, also used with Oh My Zsh):
+echo "source $(pwd)/.openmc_xs_config.sh" >> ~/.zshrc
+echo "xs-endfb71    # Set default library" >> ~/.zshrc
+source ~/.zshrc
+
+# OR for bash (Linux/WSL):
+echo "source $(pwd)/.openmc_xs_config.sh" >> ~/.bashrc
+echo "xs-endfb71    # Set default library" >> ~/.bashrc
+source ~/.bashrc
+```
+
+**Using the library switcher:**
+
+```bash
+xs-endfb71    # Switch to ENDF/B-VII.1
+xs-endfb80    # Switch to ENDF/B-VIII.0
+xs-tendl      # Switch to TENDL 2017
+xs-show       # Show current library
+```
+
+Or manually set it in each terminal session:
+
+```bash
+export OPENMC_CROSS_SECTIONS=~/data/OpenMC_DATA/endfb-vii.1-hdf5/cross_sections.xml
 ```
 
 **Verify your setup:**

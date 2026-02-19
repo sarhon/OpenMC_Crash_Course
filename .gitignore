@@ -148,3 +148,14 @@ cython_debug/
 
 # PyCharm
 .idea/
+
+# OpenMC specific
+# Example output directories
+examples/*/xml/
+examples/*/output/
+*.h5
+*.vtu
+*.pvtp
+
+# Personal cross section config (contains user-specific paths)
+.openmc_xs_config.sh
